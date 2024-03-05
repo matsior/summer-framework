@@ -18,7 +18,7 @@ public class SeedFactory {
    */
   private final Map<String, Object> seeds;
 
-  private SeedFactory() {
+  public SeedFactory() {
     this.seeds = new HashMap<>();
   }
 
