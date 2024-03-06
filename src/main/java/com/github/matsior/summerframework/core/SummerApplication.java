@@ -13,8 +13,12 @@ public class SummerApplication {
    * @param mainClass main class to load
    * @return {@link Context}
    */
-  public static Context start(Class<?> mainClass) {
-    return new Context();
+  public static Context start(Class<?> mainClass)  {
+    long start = System.currentTimeMillis();
+    Context context = new Context();
+    long end = System.currentTimeMillis();
+    System.out.println(mainClass.getSimpleName() + " started successfully. Startup took: " + (end - start) + "ms");
+    return context;
   }
 
 }
