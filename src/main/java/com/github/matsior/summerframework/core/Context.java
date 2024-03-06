@@ -7,10 +7,10 @@ package com.github.matsior.summerframework.core;
  */
 public class Context {
 
-  private final SeedFactory seedFactory;
+  private final SeedHolder seedHolder;
 
   public Context() {
-    this.seedFactory = new SeedFactory();
+    this.seedHolder = new SeedHolder();
   }
 
 }

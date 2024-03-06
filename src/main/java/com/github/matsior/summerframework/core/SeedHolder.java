@@ -9,7 +9,7 @@ import java.util.Map;
  *
  * @author Mateusz Krajewski
  */
-public class SeedFactory {
+public class SeedHolder {
 
   /**
    * Map containing all seeds.
@@ -18,7 +18,7 @@ public class SeedFactory {
    */
   private final Map<String, Object> seeds;
 
-  public SeedFactory() {
+  public SeedHolder() {
     this.seeds = new HashMap<>();
   }
 
