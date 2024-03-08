@@ -13,15 +13,15 @@ import java.util.Set;
 public class ClassScanner {
 
   /**
-   * Scans selected package to found classes.
+   * Scans selected package to found seed candidates.
    * Inner packages are also scanned.
    *
    * @param packageToScan package to scan
-   * @return set of found classes
+   * @return set of found seeds
    */
-  public Set<Class<?>> scanPackage(Package packageToScan) {
-    Reflections reflections = new Reflections(packageToScan.getName(), new SubTypesScanner(false));
-    return reflections.getSubTypesOf(Object.class);
+  public Set<Class<?>> scanSeedsIn(Package packageToScan) {
+    Reflections reflections = new Reflections(packageToScan.getName());
+    return reflections.getTypesAnnotatedWith(Seed.class);
   }
 
 }

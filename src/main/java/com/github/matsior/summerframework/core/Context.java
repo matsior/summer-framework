@@ -18,9 +18,10 @@ public class Context {
 
   private void initialize(Class<?> sourceClass) {
     ClassScanner classScanner = new ClassScanner();
-    Set<Class<?>> classes = classScanner.scanPackage(sourceClass.getPackage());
-    System.out.println("Found classes:");
-    classes.forEach(System.out::println);
+    Set<Class<?>> classes = classScanner.scanSeedsIn(sourceClass.getPackage());
+    System.out.println("Found seeds:");
+    classes.forEach(seed -> System.out.println("\t" + seed));
+
   }
 
 }
