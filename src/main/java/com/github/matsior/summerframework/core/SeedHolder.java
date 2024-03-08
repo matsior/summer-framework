@@ -28,8 +28,7 @@ public class SeedHolder {
    * @param seed seed object
    */
   public void addSeed(String name, Object seed) {
-    // TODO
-    throw new IllegalStateException("Not implemented yet!");
+    seeds.put(name, seed);
   }
 
   /**
@@ -38,9 +37,12 @@ public class SeedHolder {
    * @return seed retrieved from context
    * @throws NullPointerException if bean with given type is not found
    */
+  @SuppressWarnings("unchecked")
   public <T> T getSeed(Class<T> type) {
-    // TODO
-    throw new IllegalStateException("Not implemented yet!");
+    return (T) seeds.values().stream()
+        .filter(value -> value.getClass().equals(type))
+        .findAny()
+        .orElse(null);
   }
 
   /**
@@ -50,8 +52,7 @@ public class SeedHolder {
    * @throws NullPointerException if bean with given name is not found
    */
   public Object getSeed(String name) {
-    // TODO
-    throw new IllegalStateException("Not implemented yet!");
+   return seeds.get(name);
   }
 
   /**
@@ -60,8 +61,8 @@ public class SeedHolder {
    * @return true if seed exists in context, false if it not exists
    */
   public boolean containsSeed(Class<?> type) {
-    // TODO
-    throw new IllegalStateException("Not implemented yet!");
+    return seeds.values().stream()
+        .anyMatch(value -> value.getClass().equals(type));
   }
 
 }
