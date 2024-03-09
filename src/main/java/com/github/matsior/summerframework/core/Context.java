@@ -1,5 +1,6 @@
 package com.github.matsior.summerframework.core;
 
+import java.util.Arrays;
 import java.util.Set;
 
 /**
@@ -28,11 +29,43 @@ public class Context {
 
     for (final Class<?> aClass : classes) {
       try {
-        seedHolder.addSeed(aClass.getName(), aClass.getConstructor().newInstance());
+        autowire(aClass);
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
     }
+  }
+
+  private void autowire(Class<?> aClass) {
+    if (hasMultipleAutowireStrategy(aClass)) {
+      throw new RuntimeException("Only one autowire strategy per type is allowed"); // TODO add custom exception
+    }
+  }
+
+  private boolean hasMultipleAutowireStrategy(Class<?> aClass) {
+    int numerOfAnnotations = 0;
+    if (Arrays.stream(aClass.getConstructors()).anyMatch(constructor -> constructor.isAnnotationPresent(Autowired.class))) {
+      numerOfAnnotations++;
+    }
+    if (Arrays.stream(aClass.getMethods()).anyMatch(method -> method.isAnnotationPresent(Autowired.class))) {
+      numerOfAnnotations++;
+    }
+    if (Arrays.stream(aClass.getDeclaredFields()).anyMatch(field -> field.isAnnotationPresent(Autowired.class))) {
+      numerOfAnnotations++;
+    }
+    return numerOfAnnotations > 1;
+  }
+
+  private void autowireByConstructor(Class<?> aClass) {
+    // TODO
+  }
+
+  private void autowireBySetter(Class<?> aClass) {
+    // TODO
+  }
+
+  private void autowireByField(Class<?> aClass) {
+    // TODO
   }
 
 }
