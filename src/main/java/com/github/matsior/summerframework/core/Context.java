@@ -1,5 +1,7 @@
 package com.github.matsior.summerframework.core;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -36,10 +38,16 @@ public class Context {
     }
   }
 
-  private void autowire(Class<?> aClass) {
+  private <T> T autowire(Class<T> aClass) {
     if (hasMultipleAutowireStrategy(aClass)) {
       throw new RuntimeException("Only one autowire strategy per type is allowed"); // TODO add custom exception
     }
+
+    if (Arrays.stream(aClass.getMethods()).anyMatch(method -> method.isAnnotationPresent(Autowired.class))) {
+      return autowireBySetter(aClass);
+    }
+
+    return null;
   }
 
   private boolean hasMultipleAutowireStrategy(Class<?> aClass) {
@@ -60,12 +68,33 @@ public class Context {
     // TODO
   }
 
-  private void autowireBySetter(Class<?> aClass) {
-    // TODO
+  private <T> T autowireBySetter(Class<T> aClass) {
+    try {
+      T instance = aClass.newInstance();
+      seedHolder.addSeed(instance.getClass().getName(), instance);
+
+      Method[] dependencies = Arrays.stream(aClass.getMethods())
+              .filter(this::isSetter)
+              .toArray(Method[]::new);
+
+      for (Method dependency : dependencies) {
+        Class<?> type = dependency.getParameters()[0].getType();
+        dependency.setAccessible(true);
+        dependency.invoke(instance, autowire(type));
+      }
+
+      return instance;
+    } catch (Exception e) {
+      throw new RuntimeException(e); // TODO add custom exception
+    }
   }
 
   private void autowireByField(Class<?> aClass) {
     // TODO
+  }
+
+  private boolean isSetter(Method method) {
+    return method.getName().startsWith("set") && method.getParameterCount() == 1;
   }
 
 }
