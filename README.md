@@ -58,3 +58,7 @@ Java framework to fasten implementation process by reducing boilerplate code.<br
 Production solution.<br>
 Spring Framework replacement.
 </i>
+
+## Sources
+- https://spring.io/
+- https://github.com/TheCheerfulDev/injectinator
