@@ -1,7 +1,7 @@
 package com.github.matsior.summerframework.core;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -43,11 +43,15 @@ public class Context {
       throw new RuntimeException("Only one autowire strategy per type is allowed"); // TODO add custom exception
     }
 
+    if (Arrays.stream(aClass.getConstructors()).anyMatch(constructor -> constructor.isAnnotationPresent(Autowired.class))) {
+      return autowireByConstructor(aClass);
+    }
+
     if (Arrays.stream(aClass.getMethods()).anyMatch(method -> method.isAnnotationPresent(Autowired.class))) {
       return autowireBySetter(aClass);
     }
 
-    return null;
+    return autowireByField(aClass);
   }
 
   private boolean hasMultipleAutowireStrategy(Class<?> aClass) {
@@ -64,8 +68,8 @@ public class Context {
     return numerOfAnnotations > 1;
   }
 
-  private void autowireByConstructor(Class<?> aClass) {
-    // TODO
+  private <T> T autowireByConstructor(Class<T> aClass) {
+    return null; // TODO
   }
 
   private <T> T autowireBySetter(Class<T> aClass) {
@@ -89,8 +93,12 @@ public class Context {
     }
   }
 
-  private void autowireByField(Class<?> aClass) {
-    // TODO
+  private <T> T autowireByField(Class<T> aClass) {
+    try {
+      return aClass.getConstructor().newInstance(); // TODO
+    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private boolean isSetter(Method method) {
