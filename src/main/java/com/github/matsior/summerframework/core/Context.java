@@ -26,8 +26,8 @@ public class Context {
   private void initialize(Class<?> sourceClass) {
     ClassScanner classScanner = new ClassScanner();
     Set<Class<?>> classes = classScanner.scanSeedsIn(sourceClass.getPackage());
-    System.out.println("Found seeds:");
-    classes.forEach(seed -> System.out.println("\t" + seed));
+    System.out.println("Found seed candidates:");
+    classes.forEach(seed -> System.out.println("\t" + seed.getName()));
 
     for (final Class<?> aClass : classes) {
       try {
@@ -36,6 +36,9 @@ public class Context {
         throw new RuntimeException(e);
       }
     }
+
+    System.out.println("Context initialized with seeds:");
+    seedHolder.getAllSeedNames().forEach(seed -> System.out.println("\t" + seed));
   }
 
   private <T> T autowire(Class<T> aClass) {
