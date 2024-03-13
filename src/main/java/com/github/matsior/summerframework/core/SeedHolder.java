@@ -3,6 +3,7 @@ package com.github.matsior.summerframework.core;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Class which holds seed definitions and allows basic operations on them.
@@ -20,6 +21,15 @@ public class SeedHolder {
 
   public SeedHolder() {
     this.seeds = new HashMap<>();
+  }
+
+  /**
+   * Allows to get all seed names registered in context.
+   *
+   * @return set of seed names registered in context
+   */
+  public Set<String> getAllSeedNames() {
+    return seeds.keySet();
   }
 
   /**
