@@ -3,6 +3,7 @@ package com.github.matsior.summerframework.core;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -77,11 +78,11 @@ public class Context {
 
   private <T> T autowireBySetter(Class<T> aClass) {
     try {
-      T instance = aClass.newInstance();
-      seedHolder.addSeed(instance.getClass().getName(), instance);
+      T instance = getInstance(aClass);
 
       Method[] dependencies = Arrays.stream(aClass.getMethods())
               .filter(this::isSetter)
+              .filter(method -> method.isAnnotationPresent(Autowired.class))
               .toArray(Method[]::new);
 
       for (Method dependency : dependencies) {
@@ -91,17 +92,26 @@ public class Context {
       }
 
       return instance;
-    } catch (Exception e) {
+    } catch (InvocationTargetException | IllegalAccessException e) {
       throw new RuntimeException(e); // TODO add custom exception
     }
   }
 
   private <T> T autowireByField(Class<T> aClass) {
-    try {
-      return aClass.getConstructor().newInstance(); // TODO
-    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-      throw new RuntimeException(e);
+      return getInstance(aClass); // TODO inject all fields in class
+  }
+
+  private <T> T getInstance(Class<T> aClass) {
+    if (Objects.isNull(seedHolder.getSeed(aClass))) {
+      try {
+        T instance = aClass.newInstance();
+        seedHolder.addSeed(instance.getClass().getName(), instance);
+        return instance;
+      } catch (InstantiationException | IllegalAccessException e) {
+        throw new RuntimeException(e); // TODO add custom exception
+      }
     }
+    return seedHolder.getSeed(aClass);
   }
 
   private boolean isSetter(Method method) {
