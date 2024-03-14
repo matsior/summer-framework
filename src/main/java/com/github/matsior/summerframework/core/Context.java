@@ -1,5 +1,6 @@
 package com.github.matsior.summerframework.core;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -98,7 +99,23 @@ public class Context {
   }
 
   private <T> T autowireByField(Class<T> aClass) {
-      return getInstance(aClass); // TODO inject all fields in class
+    T instance = getInstance(aClass);
+
+    Field[] dependencies = Arrays.stream(aClass.getDeclaredFields())
+            .filter(field -> field.isAnnotationPresent(Autowired.class))
+            .toArray(Field[]::new);
+
+    for (Field dependency : dependencies) {
+      try {
+        Class<?> type = dependency.getType();
+        dependency.setAccessible(true);
+        dependency.set(instance, autowire(type));
+      } catch (IllegalAccessException e) {
+        throw new RuntimeException(e); // TODO add custom exception
+      }
+    }
+
+    return instance;
   }
 
   private <T> T getInstance(Class<T> aClass) {
