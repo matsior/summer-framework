@@ -82,8 +82,8 @@ public class Context {
       T instance = getInstance(aClass);
 
       Method[] dependencies = Arrays.stream(aClass.getMethods())
-              .filter(this::isSetter)
               .filter(method -> method.isAnnotationPresent(Autowired.class))
+              .filter(this::isSetter)
               .toArray(Method[]::new);
 
       for (Method dependency : dependencies) {
@@ -132,7 +132,7 @@ public class Context {
   }
 
   private boolean isSetter(Method method) {
-    return method.getName().startsWith("set") && method.getParameterCount() == 1;
+    return method.getName().startsWith("set") && method.getParameterCount() == 1 && method.getReturnType().equals(Void.TYPE);
   }
 
 }
