@@ -33,11 +33,11 @@ Package should be deployed on remote artifact repository and ready to use with M
 
 ### v0.0.2
 <i>Planned date: 2024.04.26</i><br>
-External properties support and receiving HTTP requests should be available.
+HTTP server should be available.
 
 ### v0.0.3
 <i>Planned date: 2024.05.24</i><br>
-External properties support and receiving HTTP requests should be available.
+External properties support and HTTP client should be available.
 
 ## FAQ
 <b>Why?</b><br>
