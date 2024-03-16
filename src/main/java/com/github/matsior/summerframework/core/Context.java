@@ -1,5 +1,7 @@
 package com.github.matsior.summerframework.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -13,6 +15,8 @@ import java.util.Set;
  * @author Mateusz Krajewski
  */
 public class Context {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(Context.class);
 
   private final SeedHolder seedHolder;
 
@@ -28,8 +32,7 @@ public class Context {
   private void initialize(Class<?> sourceClass) {
     ClassScanner classScanner = new ClassScanner();
     Set<Class<?>> classes = classScanner.scanSeedsIn(sourceClass.getPackage());
-    System.out.println("Found seed candidates:");
-    classes.forEach(seed -> System.out.println("\t" + seed.getName()));
+    LOGGER.info("Found seed candidates: {}", classes);
 
     for (final Class<?> aClass : classes) {
       try {
@@ -41,6 +44,7 @@ public class Context {
 
     System.out.println("Context initialized with seeds:");
     seedHolder.getAllSeedNames().forEach(seed -> System.out.println("\t" + seed));
+    LOGGER.info("Context initialized with seeds: {}", seedHolder.getAllSeedNames());
   }
 
   private <T> T autowire(Class<T> aClass) {

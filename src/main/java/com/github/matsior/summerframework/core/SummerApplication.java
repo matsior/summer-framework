@@ -1,11 +1,16 @@
 package com.github.matsior.summerframework.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Class used to run Summer Application and initialize context.
  *
  * @author Mateusz Krajewski
  */
 public class SummerApplication {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(SummerApplication.class);
 
   /**
    * Static method used to initialize Summer Application
@@ -18,7 +23,7 @@ public class SummerApplication {
     new Banner().printBanner();
     Context context = new Context(mainClass);
     long end = System.currentTimeMillis();
-    System.out.println(mainClass.getSimpleName() + " started successfully. Startup took: " + (end - start) + "ms");
+    LOGGER.info("{} started successfully. Startup took: {}ms", mainClass.getSimpleName(), (end - start));
     return context;
   }
 
