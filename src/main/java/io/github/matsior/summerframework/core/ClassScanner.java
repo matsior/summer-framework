@@ -1,7 +1,6 @@
-package com.github.matsior.summerframework.core;
+package io.github.matsior.summerframework.core;
 
 import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
 
 import java.util.Set;
 

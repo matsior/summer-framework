@@ -1,4 +1,4 @@
-package com.github.matsior.summerframework.core;
+package io.github.matsior.summerframework.core;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
