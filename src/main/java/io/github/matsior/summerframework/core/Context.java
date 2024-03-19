@@ -2,9 +2,12 @@ package io.github.matsior.summerframework.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
@@ -36,7 +39,8 @@ public class Context {
 
     for (final Class<?> aClass : classes) {
       try {
-        autowire(aClass);
+        Object autowire = autowire(aClass);
+        seedHolder.addSeed(autowire.getClass().getName(), autowire); // FIXME required only for constructor injection
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
@@ -77,8 +81,28 @@ public class Context {
     return numerOfAnnotations > 1;
   }
 
+  @SuppressWarnings("unchecked")
   private <T> T autowireByConstructor(Class<T> aClass) {
-    return null; // TODO
+    try {
+      Constructor<?> autowiredConstructor = Arrays.stream(aClass.getConstructors())
+              .filter(constructor -> constructor.isAnnotationPresent(Autowired.class))
+              .findFirst()
+              .orElseThrow(RuntimeException::new); // TODO add custom exception
+
+      Class<?>[] dependencies = Arrays.stream(autowiredConstructor.getParameters())
+              .map(Parameter::getType)
+              .toArray(Class[]::new);
+
+      Object[] instantiatedDependencies = new Object[dependencies.length];
+
+      for (int i = 0; i < dependencies.length; i++) {
+        instantiatedDependencies[i] = getInstance(dependencies[i]);
+      }
+
+      return (T) autowiredConstructor.newInstance(instantiatedDependencies); // TODO ensure it has to be casted
+    } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
+      throw new RuntimeException(e); // TODO add custom exception
+    }
   }
 
   private <T> T autowireBySetter(Class<T> aClass) {
