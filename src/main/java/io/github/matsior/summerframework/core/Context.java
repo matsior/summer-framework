@@ -149,6 +149,9 @@ public class Context {
   private <T> T getInstance(Class<T> aClass) {
     if (Objects.isNull(seedHolder.getSeed(aClass))) {
       try {
+        if (haveDependencies(aClass)) {
+          return autowire(aClass);
+        }
         T instance = aClass.newInstance();
         seedHolder.addSeed(instance.getClass().getName(), instance);
         return instance;
@@ -157,6 +160,10 @@ public class Context {
       }
     }
     return seedHolder.getSeed(aClass);
+  }
+
+  private boolean haveDependencies(Class<?> aClass) {
+    return false; // TODO implement
   }
 
   private boolean isSetter(Method method) {
