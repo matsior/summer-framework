@@ -26,24 +26,30 @@
     </developer>
   </developers>
 
+  <properties>
+    <reflections.version>0.10.2</reflections.version>
+    <slf4j-api.version>2.0.12</slf4j-api.version>
+    <logback-classic.version>1.5.3</logback-classic.version>
+  </properties>
+
   <dependencies>
 
     <dependency>
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>
-      <version>0.10.2</version>
+      <version>${reflections.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>2.0.12</version>
+      <version>${slf4j-api.version}</version>
     </dependency>
 
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.5.3</version>
+      <version>${logback-classic.version}</version>
     </dependency>
 
   </dependencies>
