@@ -62,3 +62,6 @@ Spring Framework replacement.
 ## Sources
 - https://spring.io/
 - https://github.com/TheCheerfulDev/injectinator
+- https://dzone.com/articles/how-to-publish-artifacts-to-maven-central
+- https://dev.to/julbrs/beginner-guide-to-maven-central-publishing-3jio
+- https://central.sonatype.org/publish/publish-maven/
