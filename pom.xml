@@ -32,6 +32,17 @@
     <url>https://github.com/matsior/summer-framework/tree/main</url>
   </scm>
 
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
+
   <properties>
     <reflections.version>0.10.2</reflections.version>
     <slf4j-api.version>2.0.12</slf4j-api.version>
