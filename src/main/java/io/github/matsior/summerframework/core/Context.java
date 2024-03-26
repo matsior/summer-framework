@@ -68,17 +68,7 @@ public class Context {
   }
 
   private boolean hasMultipleAutowireStrategy(Class<?> aClass) {
-    int numerOfAnnotations = 0;
-    if (Arrays.stream(aClass.getConstructors()).anyMatch(constructor -> constructor.isAnnotationPresent(Autowired.class))) {
-      numerOfAnnotations++;
-    }
-    if (Arrays.stream(aClass.getMethods()).anyMatch(method -> method.isAnnotationPresent(Autowired.class))) {
-      numerOfAnnotations++;
-    }
-    if (Arrays.stream(aClass.getDeclaredFields()).anyMatch(field -> field.isAnnotationPresent(Autowired.class))) {
-      numerOfAnnotations++;
-    }
-    return numerOfAnnotations > 1;
+    return AnnotationUtils.countAnnotationOccurrences(aClass, Autowired.class) > 1;
   }
 
   @SuppressWarnings("unchecked")
