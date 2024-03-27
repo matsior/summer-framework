@@ -46,8 +46,6 @@ public class Context {
       }
     }
 
-    System.out.println("Context initialized with seeds:");
-    seedHolder.getAllSeedNames().forEach(seed -> System.out.println("\t" + seed));
     LOGGER.info("Context initialized with seeds: {}", seedHolder.getAllSeedNames());
   }
 
