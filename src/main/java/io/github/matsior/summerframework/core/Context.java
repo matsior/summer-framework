@@ -51,7 +51,8 @@ public class Context {
 
   private <T> T autowire(Class<T> aClass) {
     if (hasMultipleAutowireStrategy(aClass)) {
-      throw new RuntimeException("Only one autowire strategy per type is allowed"); // TODO add custom exception
+      throw new SeedInitializationException("Failed to initialize " + aClass.getName() +
+              ". Only one autowire strategy per type is allowed");
     }
 
     if (Arrays.stream(aClass.getConstructors()).anyMatch(constructor -> constructor.isAnnotationPresent(Autowired.class))) {
@@ -75,7 +76,8 @@ public class Context {
       Constructor<?> autowiredConstructor = Arrays.stream(aClass.getConstructors())
               .filter(constructor -> constructor.isAnnotationPresent(Autowired.class))
               .findFirst()
-              .orElseThrow(RuntimeException::new); // TODO add custom exception
+              .orElseThrow(() -> new SeedInitializationException("Failed to initialize " + aClass.getName() +
+                      ". Constructor annotated with @Autowired is required but not found."));
 
       Class<?>[] dependencies = Arrays.stream(autowiredConstructor.getParameters())
               .map(Parameter::getType)
@@ -89,7 +91,8 @@ public class Context {
 
       return (T) autowiredConstructor.newInstance(instantiatedDependencies); // TODO ensure it has to be casted
     } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
-      throw new RuntimeException(e); // TODO add custom exception
+      throw new SeedInitializationException("Failed to initialize " + aClass.getName() +
+              ". Exception occurred during constructor autowire", e);
     }
   }
 
@@ -110,7 +113,8 @@ public class Context {
 
       return instance;
     } catch (InvocationTargetException | IllegalAccessException e) {
-      throw new RuntimeException(e); // TODO add custom exception
+      throw new SeedInitializationException("Failed to initialize " + aClass.getName() +
+              ". Exception occurred during setter autowire", e);
     }
   }
 
@@ -127,7 +131,8 @@ public class Context {
         dependency.setAccessible(true);
         dependency.set(instance, autowire(type));
       } catch (IllegalAccessException e) {
-        throw new RuntimeException(e); // TODO add custom exception
+        throw new SeedInitializationException("Failed to initialize " + aClass.getName() +
+                ". Exception occurred during field autowire of " + dependency.getType().getName(), e);
       }
     }
 
@@ -144,7 +149,7 @@ public class Context {
         seedHolder.addSeed(instance.getClass().getName(), instance);
         return instance;
       } catch (InstantiationException | IllegalAccessException e) {
-        throw new RuntimeException(e); // TODO add custom exception
+        throw new SeedInitializationException("Failed to instantiate " + aClass.getName(), e);
       }
     }
     return seedHolder.getSeed(aClass);
