@@ -3,7 +3,30 @@
 
 ## Getting started
 ### Quick start
-TBD
+
+#### Dependency Injection
+
+- By constructor:
+```java
+// TODO
+```
+
+- By setters:
+```java
+// TODO
+```
+
+- By fields:
+```java
+// TODO
+```
+
+#### Retrieving Seed from Context:
+
+```java
+// TODO
+```
+
 
 ### Vocabulary
 - Seed - TBD
@@ -28,7 +51,7 @@ TBD
 
 ## Future releases
 ### v0.0.1
-<i>Planned date: 2024.03.29</i><br>
+<i>Planned date: 2024.03.29</i> <b>DELAYED</b><br>
 Package should be deployed on remote artifact repository and ready to use with Maven based projects along with dependency injection functionality.
 
 ### v0.0.2
