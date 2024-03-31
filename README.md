@@ -31,7 +31,25 @@ class MySecondService {
 
 - By setters:
 ```java
-// TODO
+import io.github.matsior.summerframework.core.Autowired;
+import io.github.matsior.summerframework.core.Seed;
+
+@Seed
+class MyService {
+
+  private MySecondService mySecondService;
+
+  @Autowired
+  void setMySecondService(MySecondService mySecondService) {
+    this.mySecondService = mySecondService;
+  }
+
+}
+
+@Seed
+class MySecondService {
+
+}
 ```
 
 - By fields:
