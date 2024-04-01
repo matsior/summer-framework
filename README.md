@@ -54,7 +54,21 @@ class MySecondService {
 
 - By fields:
 ```java
-// TODO
+import io.github.matsior.summerframework.core.Autowired;
+import io.github.matsior.summerframework.core.Seed;
+
+@Seed
+class MyService {
+
+  @Autowired
+  private MySecondService mySecondService;
+
+}
+
+@Seed
+class MySecondService {
+
+}
 ```
 
 #### Retrieving Seed from Context:
