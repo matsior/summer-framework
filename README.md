@@ -4,6 +4,20 @@
 ## Getting started
 ### Quick start
 
+#### Starting application
+```java
+import io.github.matsior.summerframework.core.Context;
+import io.github.matsior.summerframework.core.SummerApplication;
+
+public class MyApplication {
+
+  public static void main(String[] args) {
+    SummerApplication.start(MyApplication.class);
+  }
+
+}
+```
+
 #### Dependency Injection
 
 - By constructor:
