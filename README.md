@@ -88,7 +88,17 @@ class MySecondService {
 #### Retrieving Seed from Context:
 
 ```java
-// TODO
+import io.github.matsior.summerframework.core.Context;
+import io.github.matsior.summerframework.core.SummerApplication;
+
+public class MyApplication {
+
+  public static void main(String[] args) {
+    Context context = SummerApplication.start(MyApplication.class);
+    MyService myService = context.getSeedHolder().getSeed(MyService.class);
+  }
+
+}
 ```
 
 
