@@ -28,6 +28,9 @@ public @interface Http {
    */
   String path() default "/";
 
+  /**
+   * Supported HTTP methods
+   */
   enum HttpMethod {
     GET,
     POST,
